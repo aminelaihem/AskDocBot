@@ -1,16 +1,17 @@
 import os
-from langchain_community.llms import OpenAI
-from langchain_community.chat_models import ChatOpenAI
-from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
+
+from langchain.chat_models import ChatOpenAI
+from langchain_core.messages import HumanMessage
+from langchain.prompts import PromptTemplate
 
 load_dotenv()
 
 llm = ChatOpenAI(
-    model_name="gpt-3.5-turbo", 
-    temperature=0
+    base_url="https://openrouter.ai/api/v1",  
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    model="mistralai/mistral-7b-instruct" 
 )
-
 
 template = PromptTemplate(
     input_variables=["question"],
@@ -19,4 +20,9 @@ template = PromptTemplate(
 
 def get_answer(question: str) -> str:
     prompt = template.format(question=question)
-    return llm(prompt)
+    
+    message = HumanMessage(content=prompt)
+
+    response = llm.invoke([message])
+
+    return response.content
