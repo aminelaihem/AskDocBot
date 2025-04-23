@@ -1,0 +1,12 @@
+# Environnement virtuel
+venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Variables d’environnement
+.env
+
+# Fichiers de config éditeur
+.vscode/
